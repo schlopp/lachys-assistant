@@ -15,7 +15,6 @@ class Events(vbu.Cog):
         Unmute users at the appropriate time.
         """
 
-        print('yooo!')
         now = datetime.datetime.now()
         async with vbu.DatabaseConnection() as db:
             fetched = await db('''SELECT * FROM muted''')

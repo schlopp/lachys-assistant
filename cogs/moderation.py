@@ -13,6 +13,24 @@ class Moderation(vbu.Cog):
 
     @vbu.command()
     @commands.guild_only()
+    @commands.has_permissions(kick_members=True)
+    @commands.bot_has_permissions(kick_members=True)
+    @utils.checks.setup_complete()
+    async def kick(self, ctx:vbu.Context, member:discord.Member, *, reason:typing.Optional[str]='None.'):
+        """
+        Kick a user.
+        """
+
+        if member.top_role >= ctx.author.top_role:
+            return await ctx.send("You can only ban members below you.")
+
+        await ctx.trigger_typing()
+        await member.send(f"You've been **kicked** from **{ctx.guild}**\nReason: {reason}")
+        await member.kick(reason=f"Kicked by {ctx.author}. Reason: {reason}")
+        await ctx.send(f"{member} `({member.id})` has been **kicked** by {ctx.author.mention}\nReason: {reason}")
+
+    @vbu.command()
+    @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     @commands.bot_has_permissions(ban_members=True)
     @utils.checks.setup_complete()
